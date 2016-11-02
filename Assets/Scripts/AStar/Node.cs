@@ -14,7 +14,7 @@ public class Node {
 		GridPosition = TileRef.GridPosition;
 	}
 
-	public void CalcValues (Node paren) {
+	public void CalcValues (Node paren, int gScore) {
 		Parent = paren;
 	}
 }

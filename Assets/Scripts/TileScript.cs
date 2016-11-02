@@ -34,19 +34,9 @@ public class TileScript : MonoBehaviour {
 		}
 	}
 
-	public SpriteRenderer SpriteRdr {
-		get {
-			return spriteRdr;
-		}
-
-		set {
-			spriteRdr = value;
-		}
-	}
-
 	// Use this for initialization
 	void Start() {
-		SpriteRdr = GetComponent<SpriteRenderer>();
+		spriteRdr = GetComponent<SpriteRenderer>();
 		IsEmpty = true;
 		Walkable = true;
 		DefaultColor = Color.white;
@@ -96,6 +86,6 @@ public class TileScript : MonoBehaviour {
 	}
 
 	private void ColorTile(Color color) {
-		SpriteRdr.color = color;
+		spriteRdr.color = color;
 	}
 }

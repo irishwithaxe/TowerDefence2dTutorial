@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public static class AStar {
 
@@ -20,27 +21,27 @@ public static class AStar {
 			}
 	}
 
-	public static event ChangeLists OnChangeLists = (ol) => { };
-	public delegate void ChangeLists(HashSet<Node> openList);
+	public static event ChangeLists OnChangeLists = (ol, cl) => { };
+	public delegate void ChangeLists(HashSet<Node> openList, HashSet<Node> closedList);
 
-	public static void GetPath(Point startPos) {
+	public static void GetPath(Point currentPos) {
 		if (nodes == null)
 			CreateNodes();
 
 		var openList = new HashSet<Node>();
-		var start = nodes[startPos.X, startPos.Y];
+		var closedList = new HashSet<Node>();
 
-		openList.Add(start);
+		var currentNode = nodes[currentPos.X, currentPos.Y];
 
-		OnChangeLists(openList);
+		openList.Add(currentNode);
 
 		for (int xdelta = -1; xdelta <= 1; xdelta++)
 			for (int ydelta = -1; ydelta <= 1; ydelta++) {
 				if (xdelta == 0 && ydelta == 0)
 					continue;
 
-				var newx = startPos.X + xdelta;
-				var newy = startPos.Y + ydelta;
+				var newx = currentPos.X + xdelta;
+				var newy = currentPos.Y + ydelta;
 
 				if (newx < 0 || newy < 0 || newx > colsCnt || newy > rowsCnt)
 					continue;
@@ -48,15 +49,24 @@ public static class AStar {
 				if (!LevelManager.Instance.Tiles[newx, newy].Walkable)
 					continue;
 
+				int gCost = 0;
+
+				if (Math.Abs(xdelta - ydelta) == 1)
+					gCost = 10;
+				else
+					gCost = 14;
+
 				var neighbor = nodes[newx, newy];
 				if (!openList.Contains(neighbor)) {
 					openList.Add(neighbor);
 				}
 
-				neighbor.CalcValues(start);
-
+				neighbor.CalcValues(currentNode, gCost);
 			}
 
-		OnChangeLists(openList);
+		openList.Remove(currentNode);
+		closedList.Add(currentNode);
+
+		OnChangeLists(openList, closedList);
 	}
 }

@@ -9,13 +9,16 @@ public class AStarDebug : MonoBehaviour {
 	private TileScript _goal;
 
 	[SerializeField]
-	private Sprite startPosMarker;
+	private GameObject startMarker;
 
 	[SerializeField]
-	private Sprite goalPosMarker;
+	private GameObject goalMarker;
 
 	[SerializeField]
 	private GameObject arrowPrefab;
+
+	[SerializeField]
+	private GameObject debugTile;
 
 	private List<GameObject> placedGOs = new List<GameObject>();
 
@@ -26,13 +29,14 @@ public class AStarDebug : MonoBehaviour {
 
 		set {
 			PrintPosValue(value, "Start -> ");
-			startPosMarker = SelectPos(value, _start, startPosMarker);
 
-			if(value == null) {
+			if (value == null) {
 				foreach (var go in placedGOs)
 					Destroy(go);
 				placedGOs.Clear();
 			}
+			else
+				PlaceDebugTile(startMarker, value.WoldPosition, Color.white);
 
 			_start = value;
 		}
@@ -45,11 +49,12 @@ public class AStarDebug : MonoBehaviour {
 
 		set {
 			PrintPosValue(value, " -> Goal");
-			goalPosMarker = SelectPos(value, _goal, goalPosMarker);
 
-			if (value != null) 
+			if (value != null) {
+				PlaceDebugTile(goalMarker, value.WoldPosition, Color.white);
 				AStar.GetPath(StartPos.GridPosition);
-			
+			}
+
 			_goal = value;
 		}
 	}
@@ -59,20 +64,6 @@ public class AStarDebug : MonoBehaviour {
 			Debug.Log("Set " + posName + " to gridpos x = " + value.GridPosition.X + " y = " + value.GridPosition.Y);
 		else
 			Debug.Log("Set " + posName + " to null");
-	}
-
-	private Sprite SelectPos(TileScript newValue, TileScript oldValue, Sprite newSprite) {
-		Sprite oldSprite = null;
-		if (newValue == null) {
-			oldSprite = oldValue.SpriteRdr.sprite;
-			oldValue.SpriteRdr.sprite = newSprite;
-		}
-		else {
-			oldSprite = newValue.SpriteRdr.sprite;
-			newValue.SpriteRdr.sprite = newSprite;
-		}
-
-		return oldSprite;
 	}
 
 	// Use this for initialization
@@ -107,9 +98,20 @@ public class AStarDebug : MonoBehaviour {
 		}
 	}
 
-	public void DebugPath(HashSet<Node> openList) {
+	public void DebugPath(HashSet<Node> openList, HashSet<Node> closedList) {
 		foreach (var node in openList) {
-			node.TileRef.SpriteRdr.color = Color.cyan;
+			if (node.TileRef == StartPos || node.TileRef == GoalPos)
+				continue;
+
+			PlaceDebugTile(node.TileRef.WoldPosition, Color.cyan);
+			PlaceArrow(node);
+		}
+
+		foreach (var node in closedList) {
+			if (node.TileRef == StartPos || node.TileRef == GoalPos)
+				continue;
+
+			PlaceDebugTile(node.TileRef.WoldPosition, Color.blue);
 			PlaceArrow(node);
 		}
 	}
@@ -124,7 +126,7 @@ public class AStarDebug : MonoBehaviour {
 		var direction = node.GridPosition - node.Parent.GridPosition;
 		if (direction == new Point(1, 1)) // parent at top left
 			arrow.transform.eulerAngles = new Vector3(0, 0, 135);
-		else if(direction == new Point(-1,-1)) // parent at down right
+		else if (direction == new Point(-1, -1)) // parent at down right
 			arrow.transform.eulerAngles = new Vector3(0, 0, -45);
 		else if (direction == new Point(-1, 1)) // parent at top right
 			arrow.transform.eulerAngles = new Vector3(0, 0, 45);
@@ -138,5 +140,19 @@ public class AStarDebug : MonoBehaviour {
 			arrow.transform.eulerAngles = new Vector3(0, 0, 180);
 		else if (direction == new Point(-1, 0)) // parent at right
 			arrow.transform.eulerAngles = new Vector3(0, 0, 0);
+	}
+
+	private void PlaceDebugTile(Vector3 worldPos, Color32 color) {
+		var placedGO = Instantiate(debugTile, worldPos, Quaternion.identity) as GameObject;
+		placedGO.GetComponent<SpriteRenderer>().color = color;
+
+		placedGOs.Add(placedGO);
+	}
+
+	private void PlaceDebugTile(GameObject gameObject, Vector3 worldPos, Color32 color) {
+		var placedGO = Instantiate(gameObject, worldPos, Quaternion.identity) as GameObject;
+		placedGO.GetComponent<SpriteRenderer>().color = color;
+
+		placedGOs.Add(placedGO);
 	}
 }
