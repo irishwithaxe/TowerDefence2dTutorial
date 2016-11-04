@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 public static class AStar {
 
@@ -21,52 +22,99 @@ public static class AStar {
 			}
 	}
 
-	public static event ChangeLists OnChangeLists = (ol, cl) => { };
-	public delegate void ChangeLists(HashSet<Node> openList, HashSet<Node> closedList);
+	public static event ChangeLists OnChangeLists = (ol, cl, p) => { };
+	public delegate void ChangeLists(HashSet<Node> openList, HashSet<Node> closedList, Stack<Node> finalPath);
 
-	public static void GetPath(Point currentPos) {
+	public static void GetPath(Point start, Point goal) {
 		if (nodes == null)
 			CreateNodes();
 
+		var finalPath = new Stack<Node>();
 		var openList = new HashSet<Node>();
 		var closedList = new HashSet<Node>();
 
-		var currentNode = nodes[currentPos.X, currentPos.Y];
+		var startNode = nodes[start.X, start.Y];
+		var goalNode = nodes[goal.X, goal.Y];
+
+		var currentNode = startNode;
+		currentNode.EmptyValues();
+		goalNode.EmptyValues();
 
 		openList.Add(currentNode);
 
-		for (int xdelta = -1; xdelta <= 1; xdelta++)
-			for (int ydelta = -1; ydelta <= 1; ydelta++) {
-				if (xdelta == 0 && ydelta == 0)
-					continue;
+		while (openList.Any()) {
+			for (int xdelta = -1; xdelta <= 1; xdelta++)
+				for (int ydelta = -1; ydelta <= 1; ydelta++) {
+					if (xdelta == 0 && ydelta == 0)
+						continue;
 
-				var newx = currentPos.X + xdelta;
-				var newy = currentPos.Y + ydelta;
+					int newx = currentNode.GridPosition.X + xdelta;
+					int newy = currentNode.GridPosition.Y + ydelta;
 
-				if (newx < 0 || newy < 0 || newx > colsCnt || newy > rowsCnt)
-					continue;
+					if (newx < 0 || newy < 0 || newx >= colsCnt || newy >= rowsCnt)
+						continue;
 
-				if (!LevelManager.Instance.Tiles[newx, newy].Walkable)
-					continue;
+					if (!LevelManager.Instance.Tiles[newx, newy].Walkable)
+						continue;
 
-				int gCost = 0;
+					var neighbor = nodes[newx, newy];
 
-				if (Math.Abs(xdelta - ydelta) == 1)
-					gCost = 10;
-				else
-					gCost = 14;
+					var gCost = 0;
+					if (xdelta == 0 || ydelta == 0)
+						gCost = 10;
+					else {
+						if (!IsConnectedDiagonally(neighbor, currentNode))
+							continue;
+						gCost = 14;
+					}
 
-				var neighbor = nodes[newx, newy];
-				if (!openList.Contains(neighbor)) {
-					openList.Add(neighbor);
+					if (openList.Contains(neighbor)) {
+						if (neighbor.Parent.G > currentNode.G)
+							neighbor.CalcValues(currentNode, goalNode, gCost);
+					}
+					else if (!closedList.Contains(neighbor)) {
+						openList.Add(neighbor);
+						neighbor.CalcValues(currentNode, goalNode, gCost);
+					}
 				}
 
-				neighbor.CalcValues(currentNode, gCost);
+			openList.Remove(currentNode);
+			closedList.Add(currentNode);
+
+			if (openList.Any())
+				currentNode = openList.BestBy((x1, x2) => x1.F < x2.F);
+
+			if (currentNode == goalNode)
+				break;
+		}
+
+		if (currentNode == goalNode)
+			while (currentNode != null && currentNode != startNode) {
+				finalPath.Push(currentNode);
+				currentNode = currentNode.Parent;
 			}
 
-		openList.Remove(currentNode);
-		closedList.Add(currentNode);
 
-		OnChangeLists(openList, closedList);
+		OnChangeLists(openList, closedList, finalPath);
+	}
+
+	private static bool IsConnectedDiagonally(Node node1, Node node2) {
+		var n1n2walkable = LevelManager.Instance.Tiles[node1.GridPosition.X, node2.GridPosition.Y].Walkable;
+		var n2n1walkable = LevelManager.Instance.Tiles[node2.GridPosition.X, node1.GridPosition.Y].Walkable;
+		return n1n2walkable && n2n1walkable;
+	}
+
+	public static T BestBy<T>(this HashSet<T> hashSet, Func<T, T, bool> FirstIsBest) {
+		T best = default(T);
+
+		if (hashSet == null || hashSet.Count == 0)
+			return best;
+
+		best = hashSet.FirstOrDefault();
+		foreach (var elem in hashSet)
+			if (FirstIsBest(elem, best))
+				best = elem;
+
+		return best;
 	}
 }

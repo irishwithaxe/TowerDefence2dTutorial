@@ -11,10 +11,10 @@ public class TowerButton : MonoBehaviour {
 	private Sprite sprite = null;
 
 	[SerializeField]
-	private int price;
+	private int price = -10;
 
 	[SerializeField]
-	private Text priceText;
+	private Text priceText = null;
 
 	public Sprite Sprite { get { return sprite; } }
 

@@ -2,6 +2,7 @@
 using System.Collections;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class AStarDebug : MonoBehaviour {
 
@@ -9,16 +10,16 @@ public class AStarDebug : MonoBehaviour {
 	private TileScript _goal;
 
 	[SerializeField]
-	private GameObject startMarker;
+	private GameObject startMarker = null;
 
 	[SerializeField]
-	private GameObject goalMarker;
+	private GameObject goalMarker = null;
 
 	[SerializeField]
-	private GameObject arrowPrefab;
+	private GameObject arrowPrefab = null;
 
 	[SerializeField]
-	private GameObject debugTile;
+	private GameObject debugTilePrefab = null;
 
 	private List<GameObject> placedGOs = new List<GameObject>();
 
@@ -28,7 +29,8 @@ public class AStarDebug : MonoBehaviour {
 		}
 
 		set {
-			PrintPosValue(value, "Start -> ");
+			//PrintPosValue(value, "Start -> ");
+			_start = value;
 
 			if (value == null) {
 				foreach (var go in placedGOs)
@@ -37,8 +39,6 @@ public class AStarDebug : MonoBehaviour {
 			}
 			else
 				PlaceDebugTile(startMarker, value.WoldPosition, Color.white);
-
-			_start = value;
 		}
 	}
 
@@ -48,14 +48,13 @@ public class AStarDebug : MonoBehaviour {
 		}
 
 		set {
-			PrintPosValue(value, " -> Goal");
+			//PrintPosValue(value, " -> Goal");
+			_goal = value;
 
 			if (value != null) {
 				PlaceDebugTile(goalMarker, value.WoldPosition, Color.white);
-				AStar.GetPath(StartPos.GridPosition);
+				AStar.GetPath(StartPos.GridPosition, value.GridPosition);
 			}
-
-			_goal = value;
 		}
 	}
 
@@ -98,20 +97,42 @@ public class AStarDebug : MonoBehaviour {
 		}
 	}
 
-	public void DebugPath(HashSet<Node> openList, HashSet<Node> closedList) {
-		foreach (var node in openList) {
-			if (node.TileRef == StartPos || node.TileRef == GoalPos)
-				continue;
+	public void DebugPath(HashSet<Node> openList, HashSet<Node> closedList, Stack<Node> finalPath) {
+		var finalHashSet = new HashSet<Node>(finalPath);
 
-			PlaceDebugTile(node.TileRef.WoldPosition, Color.cyan);
+		foreach (var node in openList.Where(x => !finalHashSet.Contains(x))) {
+			var pos = node.TileRef.GridPosition;
+			if (pos == StartPos.GridPosition ||
+				pos == GoalPos.GridPosition) {
+				PlaceArrow(node);
+				continue;
+			}
+
+			PlaceDebugTile(node.TileRef.WoldPosition, Color.cyan, node);
 			PlaceArrow(node);
 		}
 
-		foreach (var node in closedList) {
-			if (node.TileRef == StartPos || node.TileRef == GoalPos)
+		foreach (var node in closedList.Where(x => !finalHashSet.Contains(x))) {
+			var pos = node.TileRef.GridPosition;
+			if (pos == StartPos.GridPosition ||
+				pos == GoalPos.GridPosition) {
+				PlaceArrow(node);
 				continue;
+			}
 
-			PlaceDebugTile(node.TileRef.WoldPosition, Color.blue);
+			PlaceDebugTile(node.TileRef.WoldPosition, Color.blue, node);
+			PlaceArrow(node);
+		}
+
+		foreach (var node in finalHashSet) {
+			var pos = node.TileRef.GridPosition;
+			if (pos == StartPos.GridPosition ||
+				pos == GoalPos.GridPosition) {
+				PlaceArrow(node);
+				continue;
+			}
+
+			PlaceDebugTile(node.TileRef.WoldPosition, Color.magenta, node);
 			PlaceArrow(node);
 		}
 	}
@@ -142,16 +163,29 @@ public class AStarDebug : MonoBehaviour {
 			arrow.transform.eulerAngles = new Vector3(0, 0, 0);
 	}
 
-	private void PlaceDebugTile(Vector3 worldPos, Color32 color) {
-		var placedGO = Instantiate(debugTile, worldPos, Quaternion.identity) as GameObject;
-		placedGO.GetComponent<SpriteRenderer>().color = color;
+	private void PlaceDebugTile(Vector3 worldPos, Color32 color, Node node = null) {
+		var debugTile = Instantiate(debugTilePrefab, worldPos, Quaternion.identity) as GameObject;
+		debugTile.GetComponent<SpriteRenderer>().color = color;
 
-		placedGOs.Add(placedGO);
+		var dt = debugTile.GetComponent<DebugTile>();
+		if (dt != null && node != null) {
+			dt.G.text = "G" + node.G;
+			dt.G.gameObject.SetActive(true);
+
+			dt.F.text = "F" + node.F;
+			dt.F.gameObject.SetActive(true);
+
+			dt.H.text = "H" + node.H;
+			dt.H.gameObject.SetActive(true);
+		}
+		placedGOs.Add(debugTile);
 	}
 
 	private void PlaceDebugTile(GameObject gameObject, Vector3 worldPos, Color32 color) {
 		var placedGO = Instantiate(gameObject, worldPos, Quaternion.identity) as GameObject;
-		placedGO.GetComponent<SpriteRenderer>().color = color;
+
+		var spriteRenderer = placedGO.GetComponent<SpriteRenderer>();
+		spriteRenderer.color = color;
 
 		placedGOs.Add(placedGO);
 	}

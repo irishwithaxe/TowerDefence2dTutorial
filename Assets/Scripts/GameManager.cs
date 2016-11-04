@@ -26,13 +26,13 @@ public class GameManager : Singletone<GameManager> {
 
 		set {
 			_currency = value;
-			CurrecyText.text = string.Format(@" {0} <color=lime>$</color>", Currency);
+			CurrecyText.text = string.Format(@" {0} <color=lime>$</color>", _currency);
 		}
 	}
 
 	// Use this for initialization
 	void Start() {
-		Currency = 5;
+		Currency = 1000;
 	}
 
 	// Update is called once per frame
@@ -50,7 +50,8 @@ public class GameManager : Singletone<GameManager> {
 
 	public void BuyTower() {
 		Currency = Currency - _clickedBtn.Price;
-		TowerUnpick();
+		if (!Input.GetKey(KeyCode.LeftControl))
+			TowerUnpick();
 	}
 
 	private void TowerUnpick() {
