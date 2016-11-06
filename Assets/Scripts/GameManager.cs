@@ -83,6 +83,8 @@ public class GameManager : Singletone<GameManager> {
 	}
 
 	public void StartWave() {
+		LevelManager.Instance.GeneratePath();
+
 		StartCoroutine(SpawnWave());
 	}
 

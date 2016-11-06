@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 public class LevelManager : Singletone<LevelManager> {
 
@@ -23,6 +24,8 @@ public class LevelManager : Singletone<LevelManager> {
 	private Point redSpawn;
 
 	public TileScript[,] Tiles;
+
+	private Stack<Node> finalPath;
 
 	private float _tilexsize = -1f;
 
@@ -107,4 +110,7 @@ public class LevelManager : Singletone<LevelManager> {
 		Instantiate(redPortal, GetTileWorldPos(redSpawn), Quaternion.identity);
 	}
 
+	public void GeneratePath() {
+		finalPath = AStar.GetPath(blueSpawn, redSpawn);
+	}
 }

@@ -25,7 +25,7 @@ public static class AStar {
 	public static event ChangeLists OnChangeLists = (ol, cl, p) => { };
 	public delegate void ChangeLists(HashSet<Node> openList, HashSet<Node> closedList, Stack<Node> finalPath);
 
-	public static void GetPath(Point start, Point goal) {
+	public static Stack<Node> GetPath(Point start, Point goal) {
 		if (nodes == null)
 			CreateNodes();
 
@@ -93,8 +93,9 @@ public static class AStar {
 				currentNode = currentNode.Parent;
 			}
 
-
 		OnChangeLists(openList, closedList, finalPath);
+
+		return finalPath;
 	}
 
 	private static bool IsConnectedDiagonally(Node node1, Node node2) {
