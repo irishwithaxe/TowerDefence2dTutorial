@@ -6,6 +6,8 @@ public class GameManager : Singletone<GameManager> {
 
 	private TowerButton _clickedBtn;
 
+	public ObjectPool ObjPool { get; set; }
+
 	private int _currency;
 
 	[SerializeField]
@@ -17,6 +19,10 @@ public class GameManager : Singletone<GameManager> {
 				return null;
 			return _clickedBtn.TowerPrefab;
 		}
+	}
+
+	private void Awake() {
+		ObjPool = GetComponent<ObjectPool>();
 	}
 
 	public int Currency {
@@ -32,7 +38,7 @@ public class GameManager : Singletone<GameManager> {
 
 	// Use this for initialization
 	void Start() {
-		Currency = 1000;
+		Currency = 20;
 	}
 
 	// Update is called once per frame
@@ -50,7 +56,7 @@ public class GameManager : Singletone<GameManager> {
 
 	public void BuyTower() {
 		Currency = Currency - _clickedBtn.Price;
-		if (!Input.GetKey(KeyCode.LeftControl))
+		if (!Input.GetKey(KeyCode.LeftControl) || _clickedBtn.Price > Currency)
 			TowerUnpick();
 	}
 
@@ -74,5 +80,36 @@ public class GameManager : Singletone<GameManager> {
 
 	private void HandleRightMouseBtn() {
 		TowerUnpick();
+	}
+
+	public void StartWave() {
+		StartCoroutine(SpawnWave());
+	}
+
+	private IEnumerator SpawnWave() {
+		var monsterType = string.Empty;
+
+		var index = Random.Range(0, 4);
+		switch (index) {
+			case 0:
+				monsterType = "MonsterBlack";
+				break;
+			case 1:
+				monsterType = "MonsterBlue";
+				break;
+			case 2:
+				monsterType = "MonsterGreen";
+				break;
+			case 3:
+				monsterType = "MonsterRed";
+				break;
+			default:
+				throw new System.NotImplementedException("Неожиданное значение типа монстра: " + index);
+		}
+
+		var monster = ObjPool.GetObject(monsterType).GetComponent<Monster>();
+		monster.Spawn();
+
+		yield return new WaitForSeconds(2.5f);
 	}
 }

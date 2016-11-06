@@ -46,6 +46,8 @@ public class LevelManager : Singletone<LevelManager> {
 
 	}
 
+	public Portal BluePortal { get; set; }
+
 	private void CreateLevel() {
 		var worldPos = Camera.main.ScreenToWorldPoint(new Vector3(0f, Screen.height));
 
@@ -84,7 +86,7 @@ public class LevelManager : Singletone<LevelManager> {
 		var tilescript = newTile.GetComponent<TileScript>();
 
 		tilescript.Setup(x, y, TileXSize, worldPos, map);
-		
+
 	}
 
 	private Vector3 GetTilePos(Point tilepos) {
@@ -97,7 +99,9 @@ public class LevelManager : Singletone<LevelManager> {
 
 	private void SpawnPortals(int cols, int rows) {
 		blueSpawn = new Point(1, 1);
-		Instantiate(bluePortal, GetTileWorldPos(blueSpawn), Quaternion.identity);
+		var bp = Instantiate(bluePortal, GetTileWorldPos(blueSpawn), Quaternion.identity) as GameObject;
+		BluePortal = bp.GetComponent<Portal>();
+		BluePortal.name = "BluePortal";
 
 		redSpawn = new Point(cols - 2, rows - 2);
 		Instantiate(redPortal, GetTileWorldPos(redSpawn), Quaternion.identity);

@@ -62,11 +62,10 @@ public static class AStar {
 					var gCost = 0;
 					if (xdelta == 0 || ydelta == 0)
 						gCost = 10;
-					else {
-						if (!IsConnectedDiagonally(neighbor, currentNode))
-							continue;
+					else if (!IsConnectedDiagonally(neighbor, currentNode))
+						continue;
+					else
 						gCost = 14;
-					}
 
 					if (openList.Contains(neighbor)) {
 						if (neighbor.Parent.G > currentNode.G)
@@ -99,9 +98,12 @@ public static class AStar {
 	}
 
 	private static bool IsConnectedDiagonally(Node node1, Node node2) {
-		var n1n2walkable = LevelManager.Instance.Tiles[node1.GridPosition.X, node2.GridPosition.Y].Walkable;
-		var n2n1walkable = LevelManager.Instance.Tiles[node2.GridPosition.X, node1.GridPosition.Y].Walkable;
-		return n1n2walkable && n2n1walkable;
+		if (!LevelManager.Instance.Tiles[node1.GridPosition.X, node2.GridPosition.Y].Walkable)
+			return false;
+		if (!LevelManager.Instance.Tiles[node2.GridPosition.X, node1.GridPosition.Y].Walkable)
+			return false;
+
+		return true;
 	}
 
 	public static T BestBy<T>(this HashSet<T> hashSet, Func<T, T, bool> FirstIsBest) {
