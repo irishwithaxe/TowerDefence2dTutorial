@@ -65,15 +65,15 @@ public class AStarDebug : MonoBehaviour {
 			Debug.Log("Set " + posName + " to null");
 	}
 
-	// Use this for initialization
-	void Start() {
-		AStar.OnChangeLists += DebugPath;
-	}
+	//// Use this for initialization
+	//void Start() {
+	//	AStar.OnChangeLists += DebugPath;
+	//}
 
-	// Update is called once per frame
-	void Update() {
-		CLickTile();
-	}
+	//// Update is called once per frame
+	//void Update() {
+	//	CLickTile();
+	//}
 
 	private void CLickTile() {
 		if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0)) {
