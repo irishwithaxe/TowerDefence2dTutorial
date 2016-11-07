@@ -27,6 +27,15 @@ public class LevelManager : Singletone<LevelManager> {
 
 	private Stack<Node> finalPath;
 
+	public Node[] Path {
+		get {
+			if (finalPath == null)
+				GeneratePath();
+
+			return finalPath.ToArray();
+		}
+	}
+
 	private float _tilexsize = -1f;
 
 	public float TileXSize {

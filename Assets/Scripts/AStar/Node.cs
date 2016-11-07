@@ -3,6 +3,7 @@ using System.Collections;
 using System;
 
 public class Node {
+	private Vector3 _worldPos;
 
 	public Point GridPosition { get; private set; }
 
@@ -23,11 +24,14 @@ public class Node {
 	/// </summary>
 	public int F { get; set; }
 
+	public Vector3 WorldPosition { get; private set; }
+
 	public Node Parent { get; private set; }
 
 	public Node(TileScript tileRef) {
 		TileRef = tileRef;
 		GridPosition = TileRef.GridPosition;
+		WorldPosition = tileRef.WoldPosition;
 	}
 
 	public void EmptyValues() {

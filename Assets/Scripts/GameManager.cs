@@ -83,12 +83,12 @@ public class GameManager : Singletone<GameManager> {
 	}
 
 	public void StartWave() {
-		LevelManager.Instance.GeneratePath();
-
 		StartCoroutine(SpawnWave());
 	}
 
 	private IEnumerator SpawnWave() {
+		LevelManager.Instance.GeneratePath();
+
 		var monsterType = string.Empty;
 
 		var index = Random.Range(0, 4);
