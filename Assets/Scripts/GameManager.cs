@@ -1,9 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class GameManager : Singletone<GameManager> {
-
 	private TowerButton _clickedBtn;
 
 	public ObjectPool ObjPool { get; set; }
@@ -37,12 +36,12 @@ public class GameManager : Singletone<GameManager> {
 	}
 
 	// Use this for initialization
-	void Start() {
+	private void Start() {
 		Currency = 20;
 	}
 
 	// Update is called once per frame
-	void Update() {
+	private void Update() {
 		HandleInput();
 	}
 
@@ -75,7 +74,6 @@ public class GameManager : Singletone<GameManager> {
 	}
 
 	private void HandleEscape() {
-
 	}
 
 	private void HandleRightMouseBtn() {
@@ -91,20 +89,24 @@ public class GameManager : Singletone<GameManager> {
 
 		var monsterType = string.Empty;
 
-		var index = Random.Range(0, 4);
+		var index = 3;// Random.Range(0, 4);
 		switch (index) {
 			case 0:
 				monsterType = "MonsterBlack";
 				break;
+
 			case 1:
 				monsterType = "MonsterBlue";
 				break;
+
 			case 2:
 				monsterType = "MonsterGreen";
 				break;
+
 			case 3:
 				monsterType = "MonsterRed";
 				break;
+
 			default:
 				throw new System.NotImplementedException("Неожиданное значение типа монстра: " + index);
 		}

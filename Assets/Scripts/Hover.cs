@@ -1,18 +1,16 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Hover : Singletone<Hover> {
-
 	private SpriteRenderer spriteRenderer = null;
 
 	// Use this for initialization
-	void Start() {
+	private void Start() {
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		spriteRenderer.enabled = false;
 	}
 
 	// Update is called once per frame
-	void Update() {
+	private void Update() {
 		FollowMouse();
 	}
 

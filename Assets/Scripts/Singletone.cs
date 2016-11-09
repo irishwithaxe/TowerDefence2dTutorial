@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public abstract class Singletone<T> : MonoBehaviour where T : MonoBehaviour {
 	private static T _instance;

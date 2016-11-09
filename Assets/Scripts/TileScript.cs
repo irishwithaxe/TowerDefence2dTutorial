@@ -1,9 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 using UnityEngine.EventSystems;
 
 public class TileScript : MonoBehaviour {
-
 	public Point GridPosition { get; private set; }
 
 	private Color32 fullColor = new Color32(255, 119, 119, 255);
@@ -35,7 +33,7 @@ public class TileScript : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start() {
+	private void Start() {
 		spriteRdr = GetComponent<SpriteRenderer>();
 		IsEmpty = true;
 		Walkable = true;
@@ -43,8 +41,7 @@ public class TileScript : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void Update() {
-
+	private void Update() {
 	}
 
 	public void Setup(int x, int y, float tileSize, Vector3 worldPos, Transform parent) {
@@ -60,7 +57,6 @@ public class TileScript : MonoBehaviour {
 
 	private void OnMouseOver() {
 		if (!EventSystem.current.IsPointerOverGameObject() && GameManager.Instance.TowerPrefab != null) {
-
 			if (IsEmpty)
 				ColorTile(emptyColor);
 			else

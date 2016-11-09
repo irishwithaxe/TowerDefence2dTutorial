@@ -1,7 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class LevelManager : Singletone<LevelManager> {
 
@@ -49,13 +48,12 @@ public class LevelManager : Singletone<LevelManager> {
 	}
 
 	// Use this for initialization
-	void Start() {
+	private void Start() {
 		CreateLevel();
 	}
 
 	// Update is called once per frame
-	void Update() {
-
+	private void Update() {
 	}
 
 	public Portal BluePortal { get; set; }
@@ -98,7 +96,6 @@ public class LevelManager : Singletone<LevelManager> {
 		var tilescript = newTile.GetComponent<TileScript>();
 
 		tilescript.Setup(x, y, TileXSize, worldPos, map);
-
 	}
 
 	private Vector3 GetTilePos(Point tilepos) {

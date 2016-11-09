@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class CameraMovement : MonoBehaviour {
 
@@ -38,4 +37,3 @@ public class CameraMovement : MonoBehaviour {
 		minY = limitPosition.y - bottomRight.y;
 	}
 }
-

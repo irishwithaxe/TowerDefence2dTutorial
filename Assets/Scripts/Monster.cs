@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Monster : MonoBehaviour {
 
@@ -65,5 +65,8 @@ public class Monster : MonoBehaviour {
 		path = newpath;
 		pathPos = 0;
 		StepToPos(pathPos);
+	}
+
+	private void Animate(Point oldPosition, Point newPosition) {
 	}
 }

@@ -1,11 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class AStarDebug : MonoBehaviour {
-
 	private TileScript _start;
 	private TileScript _goal;
 
@@ -77,7 +74,6 @@ public class AStarDebug : MonoBehaviour {
 
 	private void CLickTile() {
 		if (Input.GetKey(KeyCode.LeftShift) && Input.GetMouseButtonDown(0)) {
-
 			var hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
 			if (hit.collider == null)
 				return;

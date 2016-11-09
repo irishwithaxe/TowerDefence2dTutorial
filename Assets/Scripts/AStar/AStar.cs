@@ -1,11 +1,8 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using System;
 using System.Linq;
 
 public static class AStar {
-
 	private static Node[,] nodes;
 	private static int colsCnt;
 	private static int rowsCnt;
@@ -23,6 +20,7 @@ public static class AStar {
 	}
 
 	public static event ChangeLists OnChangeLists = (ol, cl, p) => { };
+
 	public delegate void ChangeLists(HashSet<Node> openList, HashSet<Node> closedList, Stack<Node> finalPath);
 
 	public static Stack<Node> GetPath(Point start, Point goal) {
