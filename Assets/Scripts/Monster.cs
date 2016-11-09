@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class Monster : MonoBehaviour {
@@ -14,6 +15,8 @@ public class Monster : MonoBehaviour {
 	private int pathPos = 0;
 	private Vector2 destination;
 
+	private Animator myAnimator;
+
 	private void Update() {
 		Move();
 	}
@@ -21,6 +24,8 @@ public class Monster : MonoBehaviour {
 	public void Spawn() {
 		IsActive = false;
 		transform.position = LevelManager.Instance.BluePortal.transform.position;
+
+		myAnimator = GetComponent<Animator>();
 
 		StartCoroutine(Scale(new Vector3(0.1f, 0.1f), new Vector3(1f, 1f)));
 
@@ -54,7 +59,10 @@ public class Monster : MonoBehaviour {
 	}
 
 	private void StepToPos(int pos) {
-		GridPosition = path[pos].GridPosition;
+		var newPos = path[pos].GridPosition;
+		Animate(GridPosition, newPos);
+		GridPosition = newPos;
+
 		destination = path[pos].WorldPosition;
 	}
 
@@ -68,5 +76,31 @@ public class Monster : MonoBehaviour {
 	}
 
 	private void Animate(Point oldPosition, Point newPosition) {
+
+		Action<int, int> _setDirection = (vertical, horisontal) => {
+			myAnimator.SetInteger("Vertical", vertical);
+			myAnimator.SetInteger("Horisontal", horisontal);
+		};
+
+		if (oldPosition.Y < newPosition.Y) {
+			// down
+			Debug.Log("down to " + newPosition.ToString());
+			_setDirection(1, 0);
+		}
+		else if (oldPosition.Y > newPosition.Y) {
+			// up
+			Debug.Log("up to " + newPosition.ToString());
+			_setDirection(-1, 0);
+		}
+		else if (oldPosition.X < newPosition.X) {
+			// right
+			Debug.Log("right to " + newPosition.ToString());
+			_setDirection(0, 1);
+		}
+		else {
+			// left
+			Debug.Log("left to " + newPosition.ToString());
+			_setDirection(0, -1);
+		}
 	}
 }
