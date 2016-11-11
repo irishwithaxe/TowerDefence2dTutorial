@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: 74247bdbfda225c4183700dcdf87f536
-timeCreated: 1477512804
+guid: f3662662a42f66648a9a717935ba8ef2
+timeCreated: 1478890752
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -13,6 +13,13 @@ TextureImporter:
     21300012: RedPortal_6
     21300014: RedPortal_7
     21300016: RedPortal_8
+    21300018: RedPortal_9
+    21300020: RedPortal_10
+    21300022: RedPortal_11
+    21300024: RedPortal_12
+    21300026: RedPortal_13
+    21300028: RedPortal_14
+    21300030: RedPortal_15
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -66,11 +73,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 200
+        y: 300
         width: 100
         height: 100
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -79,11 +86,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 100
-        y: 200
+        y: 300
         width: 100
         height: 100
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -92,11 +99,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 200
-        y: 200
+        y: 300
         width: 100
         height: 100
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -104,12 +111,12 @@ TextureImporter:
       name: RedPortal_3
       rect:
         serializedVersion: 2
-        x: 0
-        y: 100
+        x: 300
+        y: 300
         width: 100
         height: 100
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -117,8 +124,8 @@ TextureImporter:
       name: RedPortal_4
       rect:
         serializedVersion: 2
-        x: 100
-        y: 100
+        x: 0
+        y: 200
         width: 100
         height: 100
       alignment: 0
@@ -130,8 +137,8 @@ TextureImporter:
       name: RedPortal_5
       rect:
         serializedVersion: 2
-        x: 200
-        y: 100
+        x: 100
+        y: 200
         width: 100
         height: 100
       alignment: 0
@@ -143,12 +150,12 @@ TextureImporter:
       name: RedPortal_6
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 200
+        y: 200
         width: 100
         height: 100
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
@@ -156,8 +163,34 @@ TextureImporter:
       name: RedPortal_7
       rect:
         serializedVersion: 2
+        x: 300
+        y: 200
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: RedPortal_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: RedPortal_9
+      rect:
+        serializedVersion: 2
         x: 100
-        y: 0
+        y: 100
         width: 100
         height: 100
       alignment: 0
@@ -166,7 +199,59 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: RedPortal_8
+      name: RedPortal_10
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: RedPortal_11
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 100
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: RedPortal_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: RedPortal_13
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: RedPortal_14
       rect:
         serializedVersion: 2
         x: 200
@@ -175,6 +260,19 @@ TextureImporter:
         height: 100
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: RedPortal_15
+      rect:
+        serializedVersion: 2
+        x: 300
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0

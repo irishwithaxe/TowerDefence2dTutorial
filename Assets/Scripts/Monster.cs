@@ -25,7 +25,6 @@ public class Monster : MonoBehaviour {
 	}
 
 	public void Spawn() {
-		IsActive = false;
 		transform.position = LevelManager.Instance.BluePortal.transform.position;
 		GridPosition = LevelManager.Instance.BlueSpawn;
 
@@ -36,7 +35,7 @@ public class Monster : MonoBehaviour {
 		SetPath(LevelManager.Instance.Path);
 	}
 
-	public IEnumerator Scale(Vector3 from, Vector3 to) {
+	public IEnumerator Scale(Vector3 from, Vector3 to, bool destroyAfterScaling = false) {
 		float progress = 0;
 
 		while (progress <= 1) {
@@ -46,7 +45,11 @@ public class Monster : MonoBehaviour {
 		}
 
 		transform.localScale = to;
-		IsActive = true;
+		if (destroyAfterScaling) {
+			Release();
+		}
+		else
+			IsActive = true;
 	}
 
 	private void Move() {
@@ -122,6 +125,23 @@ public class Monster : MonoBehaviour {
 
 		else
 			_setDirection(0, -1);
+	}
 
+	private void OnTriggerEnter2D(Collider2D other) {
+		switch (other.tag) {
+			case "RedPortal":
+				StartCoroutine(Scale(new Vector3(1, 1), new Vector3(.1f, .1f), true));
+				var redPortal = other.GetComponent<Portal>();
+				if (redPortal != null)
+					redPortal.Open();
+				break;
+			default:
+				break;
+		}
+	}
+
+	public void Release() {
+		IsActive = false;
+		GameManager.Instance.ObjPool.ReleaseGameObject(gameObject);
 	}
 }

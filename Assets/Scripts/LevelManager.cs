@@ -113,6 +113,7 @@ public class LevelManager : Singletone<LevelManager> {
 		BluePortal.name = "BluePortal";
 
 		RedSpawn = new Point(cols - 2, rows - 2);
+		RedSpawn = new Point(4, 4);
 		Instantiate(redPortal, GetTileWorldPos(RedSpawn), Quaternion.identity);
 	}
 

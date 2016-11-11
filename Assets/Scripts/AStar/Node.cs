@@ -2,8 +2,6 @@
 using UnityEngine;
 
 public class Node {
-	private Vector3 _worldPos;
-
 	public Point GridPosition { get; private set; }
 
 	public TileScript TileRef { get; private set; }
