@@ -89,23 +89,23 @@ public class GameManager : Singletone<GameManager> {
 
 		var monsterType = string.Empty;
 
-		var index = 3;// Random.Range(0, 4);
+		var index = Random.Range(0, 2);
 		switch (index) {
 			case 0:
-				monsterType = "MonsterBlack";
+				monsterType = "MonsterTurquoise";
 				break;
 
 			case 1:
-				monsterType = "MonsterBlue";
-				break;
-
-			case 2:
-				monsterType = "MonsterGreen";
-				break;
-
-			case 3:
 				monsterType = "MonsterRed";
 				break;
+
+			//case 2:
+			//	monsterType = "MonsterGreen";
+			//	break;
+
+			//case 3:
+			//	monsterType = "MonsterBlue";
+			//	break;
 
 			default:
 				throw new System.NotImplementedException("Неожиданное значение типа монстра: " + index);

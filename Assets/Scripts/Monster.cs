@@ -7,6 +7,9 @@ public class Monster : MonoBehaviour {
 	[SerializeField]
 	private float speed = 1f;
 
+	[SerializeField]
+	private int movingType = 0;
+
 	private Node[] path;
 
 	public Point GridPosition { get; set; }
@@ -24,6 +27,7 @@ public class Monster : MonoBehaviour {
 	public void Spawn() {
 		IsActive = false;
 		transform.position = LevelManager.Instance.BluePortal.transform.position;
+		GridPosition = LevelManager.Instance.BlueSpawn;
 
 		myAnimator = GetComponent<Animator>();
 
@@ -60,10 +64,35 @@ public class Monster : MonoBehaviour {
 
 	private void StepToPos(int pos) {
 		var newPos = path[pos].GridPosition;
-		Animate(GridPosition, newPos);
-		GridPosition = newPos;
 
+		if (movingType == 0)
+			Animate(GridPosition, newPos);
+		if (movingType == 1)
+			Rotate(GridPosition, newPos);
+
+		GridPosition = newPos;
 		destination = path[pos].WorldPosition;
+	}
+
+	private void Rotate(Point oldPosition, Point newPosition) {
+		var direction = newPosition - oldPosition;
+
+		if (direction == new Point(1, 1)) // goal at down right
+			transform.eulerAngles = new Vector3(0, 0, -135);
+		else if (direction == new Point(-1, -1)) // goal at top left
+			transform.eulerAngles = new Vector3(0, 0, 45);
+		else if (direction == new Point(-1, 1)) // goal at down left
+			transform.eulerAngles = new Vector3(0, 0, 135);
+		else if (direction == new Point(1, -1)) // goal at top right
+			transform.eulerAngles = new Vector3(0, 0, -45);
+		else if (direction == new Point(0, 1)) // goal at down
+			transform.eulerAngles = new Vector3(0, 0, -180);
+		else if (direction == new Point(0, -1)) // goal at up
+			transform.eulerAngles = new Vector3(0, 0, 0);
+		else if (direction == new Point(1, 0)) // goal at right
+			transform.eulerAngles = new Vector3(0, 0, -90);
+		else if (direction == new Point(-1, 0)) // goal at left
+			transform.eulerAngles = new Vector3(0, 0, 90);
 	}
 
 	private void SetPath(Node[] newpath) {
@@ -82,25 +111,17 @@ public class Monster : MonoBehaviour {
 			myAnimator.SetInteger("Horisontal", horisontal);
 		};
 
-		if (oldPosition.Y < newPosition.Y) {
-			// down
-			Debug.Log("down to " + newPosition.ToString());
+		if (oldPosition.Y < newPosition.Y)
 			_setDirection(1, 0);
-		}
-		else if (oldPosition.Y > newPosition.Y) {
-			// up
-			Debug.Log("up to " + newPosition.ToString());
+
+		else if (oldPosition.Y > newPosition.Y)
 			_setDirection(-1, 0);
-		}
-		else if (oldPosition.X < newPosition.X) {
-			// right
-			Debug.Log("right to " + newPosition.ToString());
+
+		else if (oldPosition.X < newPosition.X)
 			_setDirection(0, 1);
-		}
-		else {
-			// left
-			Debug.Log("left to " + newPosition.ToString());
+
+		else
 			_setDirection(0, -1);
-		}
+
 	}
 }

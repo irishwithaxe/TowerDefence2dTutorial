@@ -19,8 +19,8 @@ public class LevelManager : Singletone<LevelManager> {
 	[SerializeField]
 	private GameObject redPortal = null;
 
-	private Point blueSpawn;
-	private Point redSpawn;
+	public Point BlueSpawn;
+	public Point RedSpawn;
 
 	public TileScript[,] Tiles;
 
@@ -107,16 +107,16 @@ public class LevelManager : Singletone<LevelManager> {
 	}
 
 	private void SpawnPortals(int cols, int rows) {
-		blueSpawn = new Point(1, 1);
-		var bp = Instantiate(bluePortal, GetTileWorldPos(blueSpawn), Quaternion.identity) as GameObject;
+		BlueSpawn = new Point(1, 1);
+		var bp = Instantiate(bluePortal, GetTileWorldPos(BlueSpawn), Quaternion.identity) as GameObject;
 		BluePortal = bp.GetComponent<Portal>();
 		BluePortal.name = "BluePortal";
 
-		redSpawn = new Point(cols - 2, rows - 2);
-		Instantiate(redPortal, GetTileWorldPos(redSpawn), Quaternion.identity);
+		RedSpawn = new Point(cols - 2, rows - 2);
+		Instantiate(redPortal, GetTileWorldPos(RedSpawn), Quaternion.identity);
 	}
 
 	public void GeneratePath() {
-		finalPath = AStar.GetPath(blueSpawn, redSpawn);
+		finalPath = AStar.GetPath(BlueSpawn, RedSpawn);
 	}
 }
